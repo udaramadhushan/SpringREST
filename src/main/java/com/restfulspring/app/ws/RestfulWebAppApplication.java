@@ -17,5 +17,11 @@ public class RestfulWebAppApplication {
 		
 		return new BCryptPasswordEncoder();
 	}
+	
+	@Bean
+	public SpringApplicationContext springApplicationContext() {
+		
+		return new SpringApplicationContext();
+	}
 
 }
