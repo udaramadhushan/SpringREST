@@ -92,6 +92,25 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
+
+	@Override
+	public UserDto updateUser(String userId, UserDto user) {
+		UserDto returnValue = new UserDto();
+		
+		UserEntity userEntity = userRepository.findByUserId(userId);
+		if(userEntity == null) throw new UsernameNotFoundException(userId);
+		
+		
+		userEntity.setFirstName(user.getFirstName());
+		userEntity.setLastName(user.getLastName());
+		
+		UserEntity updatedUser = userRepository.save(userEntity);
+		
+		BeanUtils.copyProperties(updatedUser  , returnValue);
+		
+		return returnValue;
+	}
+
 	
 	
 }
