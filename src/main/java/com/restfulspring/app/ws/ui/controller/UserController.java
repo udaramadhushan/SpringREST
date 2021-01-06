@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.restfulspring.app.ws.service.UserService;
 import com.restfulspring.app.ws.shared.dto.UserDto;
 import com.restfulspring.app.ws.ui.model.request.UserDetailsRequestModel;
+import com.restfulspring.app.ws.ui.model.response.OperationStatusModel;
 import com.restfulspring.app.ws.ui.model.response.UserRest;
 
 
@@ -75,10 +76,17 @@ public class UserController {
 		return returnValue;
 	}
 	
-	@DeleteMapping
-	public String deleteUser() {
+	@DeleteMapping(path="/{id}",
+			produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+	public OperationStatusModel deleteUser(@PathVariable String id) {
 		
-		return "delete user was created";
+		OperationStatusModel returnValue =  new OperationStatusModel();
+		returnValue.setOperationName("Delete");
+		returnValue.setOperationResult("Success");
+		
+		userService.deleteUser(id);
+		return returnValue;
+		
 	}
 	
 	
