@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.restfulspring.app.ws.exceptions.UserServiceException;
 import com.restfulspring.app.ws.service.UserService;
 import com.restfulspring.app.ws.shared.dto.UserDto;
 import com.restfulspring.app.ws.ui.model.request.UserDetailsRequestModel;
+import com.restfulspring.app.ws.ui.model.response.ErrorMessages;
 import com.restfulspring.app.ws.ui.model.response.OperationStatusModel;
 import com.restfulspring.app.ws.ui.model.response.UserRest;
 
@@ -50,9 +52,13 @@ public class UserController {
 	@PostMapping(path="/register",
 			produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
 			consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-	public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails) {
+	public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails) throws Exception {
 		
 		UserRest returnValue = new UserRest();
+		
+		
+		if(userDetails.getFirstName().isEmpty()) throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
+		
 		
 		UserDto userDto = new UserDto();
 		BeanUtils.copyProperties(userDetails, userDto);
@@ -94,7 +100,7 @@ public class UserController {
 	}
 	
 	@GetMapping(produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-	public List<UserRest> getUsers(@RequestParam(value="page", defaultValue="1")int page,@RequestParam(value="limit", defaultValue="25")int limit){
+	public List<UserRest> getUsers(@RequestParam(value="page", defaultValue="0")int page,@RequestParam(value="limit", defaultValue="25")int limit){
 		
 		List <UserRest> returnValue = new ArrayList<>();
 		List<UserDto> users= userService.getUsers(page,limit);
