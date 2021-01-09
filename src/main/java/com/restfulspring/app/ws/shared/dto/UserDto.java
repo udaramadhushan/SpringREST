@@ -1,6 +1,7 @@
 package com.restfulspring.app.ws.shared.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class UserDto implements Serializable{
 
@@ -17,8 +18,16 @@ public class UserDto implements Serializable{
 	private String encryptedPassword;
 	private String emailVerficationToken ;
 	private Boolean emailVerificationStatus=false;
+	private List<AddressDto>  addresses;
 	
 	
+	
+	public List<AddressDto> getAddresses() {
+		return addresses;
+	}
+	public void setAddresses(List<AddressDto> addresses) {
+		this.addresses = addresses;
+	}
 	public String getUserId() {
 		return userId;
 	}
