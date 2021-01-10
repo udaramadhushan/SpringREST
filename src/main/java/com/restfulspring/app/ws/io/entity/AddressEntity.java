@@ -43,7 +43,7 @@ public class AddressEntity implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name="users_id")
-	private UserDto userDetails;
+	private UserEntity userDetails;
 	
 	
 	
@@ -84,10 +84,10 @@ public class AddressEntity implements Serializable {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public UserDto getUserDetails() {
+	public UserEntity  getUserDetails() {
 		return userDetails;
 	}
-	public void setUserDetails(UserDto userDetails) {
+	public void setUserDetails(UserEntity  userDetails) {
 		this.userDetails = userDetails;
 	}
 

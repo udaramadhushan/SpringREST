@@ -3,6 +3,7 @@ package com.restfulspring.app.ws.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import com.restfulspring.app.ws.io.entity.UserEntity;
 import com.restfulspring.app.ws.io.repositories.UserRepository;
 import com.restfulspring.app.ws.service.UserService;
 import com.restfulspring.app.ws.shared.Utils;
+import com.restfulspring.app.ws.shared.dto.AddressDto;
 import com.restfulspring.app.ws.shared.dto.UserDto;
 
 
@@ -43,11 +45,23 @@ public class UserServiceImpl implements UserService {
 		if(userRepository.findByEmail(user.getEmail()) != null) throw new RuntimeException("record already exsists");
 		
 		
-		UserEntity userEntity = new UserEntity();
+		for(int i=0; i<user.getAddresses().size(); i++) {
+			
+			AddressDto address = user.getAddresses().get(i);
+			address.setUserDetails(user);
+			address.setAddressId(utils.generateAddressId(30));
+			user.getAddresses().set(i, address);
+			
+		}
 		
 
 		
-		BeanUtils.copyProperties(user, userEntity); //when we copy the user to userEntity the userID and the encrypted pw becomes null 
+		//BeanUtils.copyProperties(user, userEntity); //when we copy the user to userEntity the userID and the encrypted pw becomes null 
+		
+		ModelMapper modelMapper = new ModelMapper();
+		
+		UserEntity userEntity = modelMapper.map(user, UserEntity.class);
+		
 		
 		String publicUserId = utils.generateUserId(30);
 		userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -56,10 +70,13 @@ public class UserServiceImpl implements UserService {
 		
 		UserEntity storedUserDetails = userRepository.save(userEntity);
 		
-		UserDto returnValue = new UserDto();
-		BeanUtils.copyProperties( storedUserDetails , returnValue);
+		 
+		//BeanUtils.copyProperties( storedUserDetails , returnValue);
+		
+	    UserDto returnValue = modelMapper.map(storedUserDetails, UserDto.class);
 		
 		
+
 		return returnValue;
 	}
 
