@@ -1,9 +1,11 @@
 package com.restfulspring.app.ws.ui.controller;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,9 +21,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.restfulspring.app.ws.exceptions.UserServiceException;
+import com.restfulspring.app.ws.service.AddressService;
 import com.restfulspring.app.ws.service.UserService;
+import com.restfulspring.app.ws.shared.dto.AddressDto;
 import com.restfulspring.app.ws.shared.dto.UserDto;
 import com.restfulspring.app.ws.ui.model.request.UserDetailsRequestModel;
+import com.restfulspring.app.ws.ui.model.response.AddressesRest;
 import com.restfulspring.app.ws.ui.model.response.ErrorMessages;
 import com.restfulspring.app.ws.ui.model.response.OperationStatusModel;
 import com.restfulspring.app.ws.ui.model.response.UserRest;
@@ -34,6 +39,9 @@ public class UserController {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	AddressService addressService;
 	
 
 	
@@ -48,6 +56,23 @@ public class UserController {
 		
 		return returnValue;
 	}
+	
+	
+	@GetMapping(path="/{id}/addresses",
+			produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+public List<AddressesRest> getUserAddresses(@PathVariable String id){
+	
+		List<AddressesRest> returnValue = new ArrayList<>();
+	
+	List<AddressDto> addressDto = addressesService.getAddresses(id);
+	
+	if(addressDto != null && !addressDto.isEmpty()) {
+	Type listType = new TypeToken<List<AddressesRest>>() {}.getType();
+		returnValue = new ModelMapper().map(addressDto,listType);
+	
+	}
+	return returnValue;
+}
 	
 	
 	@PostMapping(path="/register",
