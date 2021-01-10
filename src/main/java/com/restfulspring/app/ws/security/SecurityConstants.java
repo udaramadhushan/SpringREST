@@ -11,6 +11,7 @@ public class SecurityConstants {
 	public static final String SIGN_UP_URL = "/users/";
 	public static final String GET_USER = "/users/{id}";
 	public static final String REGISTER = "/users/register";
+	public static final String GET_ADDRESSES = "/users/{id}/*/*";
 	
 
 

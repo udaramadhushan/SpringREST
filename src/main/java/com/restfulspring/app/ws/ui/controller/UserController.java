@@ -41,6 +41,9 @@ public class UserController {
 	UserService userService;
 	
 	@Autowired
+	AddressService addressesService;
+	
+	@Autowired
 	AddressService addressService;
 	
 
@@ -72,6 +75,18 @@ public List<AddressesRest> getUserAddresses(@PathVariable String id){
 	
 	}
 	return returnValue;
+}
+	
+	
+	@GetMapping(path="/{id}/addresses/{addressId}",
+			produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+public AddressesRest getUserAddress(@PathVariable String addressId){
+	
+		AddressDto addressDto = addressService.getAddress(addressId);
+		
+		ModelMapper modelMapper = new ModelMapper();
+		
+		return modelMapper.map(addressDto, AddressesRest.class);
 }
 	
 	
