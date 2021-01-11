@@ -1,8 +1,8 @@
 package com.restfulspring.app.ws.ui.model.response;
 
+import org.springframework.hateoas.RepresentationModel;
 
-
-public class AddressesRest {
+public class AddressesRest extends RepresentationModel {
 	
 	private String city;
 	private String country;
