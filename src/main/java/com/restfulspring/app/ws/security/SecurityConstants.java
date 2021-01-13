@@ -12,6 +12,7 @@ public class SecurityConstants {
 	public static final String GET_USER = "/users/{id}";
 	public static final String REGISTER = "/users/register";
 	public static final String GET_ADDRESSES = "/users/{id}/*/*";
+	public static final String VERIFICATION_EMAIL_URL = "/users/email-verification";
 	
 
 

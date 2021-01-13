@@ -38,6 +38,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 		.permitAll()
 		.antMatchers(HttpMethod.GET, SecurityConstants.GET_ADDRESSES)
 		.permitAll()
+		.antMatchers(HttpMethod.GET , SecurityConstants.VERIFICATION_EMAIL_URL)
+		.permitAll()
 		.anyRequest().authenticated().and()
 		.addFilter(getAuthenticationFilter())
 		.addFilter(new AuthenticationFilter(authenticationManager()))

@@ -8,6 +8,8 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,6 +32,8 @@ import com.restfulspring.app.ws.ui.model.response.AddressesRest;
 import com.restfulspring.app.ws.ui.model.response.ErrorMessages;
 import com.restfulspring.app.ws.ui.model.response.OperationStatusModel;
 import com.restfulspring.app.ws.ui.model.response.UserRest;
+
+
 
 
 @RestController
@@ -85,6 +89,7 @@ public AddressesRest getUserAddress(@PathVariable String addressId){
 		AddressDto addressDto = addressService.getAddress(addressId);
 		
 		ModelMapper modelMapper = new ModelMapper();
+		//WebMvcLinkBuilder addressLink = WebMvcLinkBuilder.linkTo(UserController.class).slash("addresses").slash(addressId)
 		
 		return modelMapper.map(addressDto, AddressesRest.class);
 }
@@ -158,6 +163,28 @@ public AddressesRest getUserAddress(@PathVariable String addressId){
 			returnValue.add(userModel);
 			
 		}
+	
+		
+		return returnValue;
+		
+	}
+	
+	
+	@GetMapping(path="/email-verification",produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+	public OperationStatusModel verifyEmailToken(@RequestParam(value="token")String token){
+		
+		OperationStatusModel returnValue = new OperationStatusModel();
+		returnValue.setOperationName(RequestOperationName.VERIFY_EMAIL.name());
+		
+		boolean isVerified = userService.verifyEmailToken(token);
+		
+		if(isVerified) {
+			
+			returnValue.setOperationResult("success");
+		}else {
+			returnValue.setOperationResult("failed");
+		}
+		
 	
 		
 		return returnValue;
