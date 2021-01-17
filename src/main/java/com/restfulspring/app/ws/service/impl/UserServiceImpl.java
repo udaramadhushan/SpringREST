@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import com.restfulspring.app.ws.io.entity.UserEntity;
 import com.restfulspring.app.ws.io.repositories.UserRepository;
 import com.restfulspring.app.ws.service.UserService;
+import com.restfulspring.app.ws.shared.AmazonSES;
 import com.restfulspring.app.ws.shared.Utils;
 import com.restfulspring.app.ws.shared.dto.AddressDto;
 import com.restfulspring.app.ws.shared.dto.UserDto;
@@ -76,6 +77,10 @@ public class UserServiceImpl implements UserService {
 		//BeanUtils.copyProperties( storedUserDetails , returnValue);
 		
 	    UserDto returnValue = modelMapper.map(storedUserDetails, UserDto.class);
+	    
+	    
+	    //send an email using amazon SES
+	    new AmazonSES().verifyEmail(returnValue);
 		
 		
 
@@ -192,6 +197,38 @@ public class UserServiceImpl implements UserService {
 		
 		
 		
+		return returnValue;
+	}
+
+
+	@Override
+	public boolean requestPasswordReset(String email) {
+	boolean returnValue =  false;
+	UserEntity userEntity = userRepository.findByEmail(email);
+	
+	
+	if(userEntity == null) {
+		
+		return returnValue;
+	}
+	
+	
+	String token =new  Utils().generatePasswordResetToken(userEntity.getUserId());
+	
+	PasswordResetTokenEntity  passwordResetTokenEntity  = new PasswordResetTokenEntity();
+	
+	passwordResetTokenEntity.setToken(token);
+	passwordResetTokenEntity.setUserDetails(userEntity);
+	passwordTokenRepository.save(passwordResetTokenEntity);
+	
+	
+	returnValue = new AmazonSES().sendPasswordResetRequest(userEntity.getFirstName(), userEntity.getEmail(), token);
+	
+	
+	
+	
+	
+	
 		return returnValue;
 	}
 

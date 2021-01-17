@@ -27,6 +27,7 @@ import com.restfulspring.app.ws.service.AddressService;
 import com.restfulspring.app.ws.service.UserService;
 import com.restfulspring.app.ws.shared.dto.AddressDto;
 import com.restfulspring.app.ws.shared.dto.UserDto;
+import com.restfulspring.app.ws.ui.model.request.PasswordResetRequestModel;
 import com.restfulspring.app.ws.ui.model.request.UserDetailsRequestModel;
 import com.restfulspring.app.ws.ui.model.response.AddressesRest;
 import com.restfulspring.app.ws.ui.model.response.ErrorMessages;
@@ -191,6 +192,26 @@ public AddressesRest getUserAddress(@PathVariable String addressId){
 		
 	}
 	
+	
+	@PostMapping(path="/password-reset-request",produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+	public OperationStatusModel requestReset(@RequestBody PasswordResetRequestModel passwordResetRequestModel){
+		
+		OperationStatusModel returnValue = new OperationStatusModel();
+		
+		boolean operationResult = userService.requestPasswordReset(passwordResetRequestModel.getEmail());
+		
+		
+		returnValue.setOperationName(RequestOperationName.REQUEST_PASSWORD_RESET.name());
+		returnValue.setOperationResult("failed");
+		
+		if(operationResult) {
+			
+			returnValue.setOperationResult("success");
+		}
+		
+		return returnValue;
+		
+	}
 	
 	
 	
