@@ -16,7 +16,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.restfulspring.app.ws.io.entity.PasswordResetTokenEntity;
 import com.restfulspring.app.ws.io.entity.UserEntity;
+import com.restfulspring.app.ws.io.repositories.PasswordResetTokenRepository;
 import com.restfulspring.app.ws.io.repositories.UserRepository;
 import com.restfulspring.app.ws.service.UserService;
 import com.restfulspring.app.ws.shared.AmazonSES;
@@ -38,6 +40,10 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	BCryptPasswordEncoder  bCryptPasswordEncoder;
+	
+	
+	@Autowired
+	PasswordResetTokenRepository passwordTokenRepository;
 	
 
 	public UserDto createUser(UserDto user) {

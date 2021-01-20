@@ -13,6 +13,8 @@ public class SecurityConstants {
 	public static final String REGISTER = "/users/register";
 	public static final String GET_ADDRESSES = "/users/{id}/*/*";
 	public static final String VERIFICATION_EMAIL_URL = "/users/email-verification";
+	public static final long EXPIRATION_TIME_2 = 60*60*1000;
+	public static final String PASSWORD_RESET_REQ = "/users/password-reset-request";
 	
 
 
