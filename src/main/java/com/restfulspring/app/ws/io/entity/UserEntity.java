@@ -40,7 +40,7 @@ public class UserEntity implements Serializable {
 	private String encryptedPassword;
 	
 	
-	private String emailVerficationToken;
+	private String emailVerificationToken;
 	
 	@Column(nullable=false)
 	private Boolean emailVerificationStatus = false;
@@ -99,13 +99,7 @@ public class UserEntity implements Serializable {
 
 	
 
-	public String getEmailVerficationToken() {
-		return emailVerficationToken;
-	}
-
-	public void setEmailVerficationToken(String emailVerficationToken) {
-		this.emailVerficationToken = emailVerficationToken;
-	}
+	
 
 	public Boolean getEmailVerificationStatus() {
 		return emailVerificationStatus;
@@ -121,6 +115,14 @@ public class UserEntity implements Serializable {
 
 	public void setAddresses(List<AddressEntity> addresses) {
 		this.addresses = addresses;
+	}
+
+	public String getEmailVerificationToken() {
+		return emailVerificationToken;
+	}
+
+	public void setEmailVerificationToken(String emailVerificationToken) {
+		this.emailVerificationToken = emailVerificationToken;
 	}
 	
 	
