@@ -65,10 +65,12 @@ public class UserDto implements Serializable{
 	public void setEncryptedPassword(String encryptedPassword) {
 		this.encryptedPassword = encryptedPassword;
 	}
-	public String getEmailVerficationToken() {
+
+	
+	public String getEmailVerificationToken() {
 		return emailVerificationToken;
 	}
-	public void setEmailVerficationToken(String emailVerficationToken) {
+	public void setEmailVerificationToken(String emailVerficationToken) {
 		this.emailVerificationToken = emailVerficationToken;
 	}
 	public Boolean getEmailVerificationStatus() {
@@ -77,9 +79,8 @@ public class UserDto implements Serializable{
 	public void setEmailVerificationStatus(Boolean emailVerificationStatus) {
 		this.emailVerificationStatus = emailVerificationStatus;
 	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
+	
+
 
 	
 	

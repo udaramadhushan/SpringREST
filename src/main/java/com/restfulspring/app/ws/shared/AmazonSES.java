@@ -67,8 +67,8 @@ public class AmazonSES {
 		AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard().withRegion(Regions.US_EAST_1)
 				.build();
  
-		String htmlBodyWithToken = HTMLBODY.replace("$tokenValue", userDto.getEmailVerficationToken());
-		String textBodyWithToken = TEXTBODY.replace("$tokenValue", userDto.getEmailVerficationToken());
+		String htmlBodyWithToken = HTMLBODY.replace("$tokenValue", userDto.getEmailVerificationToken());
+		String textBodyWithToken = TEXTBODY.replace("$tokenValue", userDto.getEmailVerificationToken());
 
 		SendEmailRequest request = new SendEmailRequest()
 				.withDestination(new Destination().withToAddresses(userDto.getEmail()))

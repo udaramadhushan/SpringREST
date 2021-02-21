@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.restfulspring.app.ws.exceptions.UserServiceException;
 import com.restfulspring.app.ws.io.entity.PasswordResetTokenEntity;
 import com.restfulspring.app.ws.io.entity.UserEntity;
 import com.restfulspring.app.ws.io.repositories.PasswordResetTokenRepository;
@@ -45,11 +46,15 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	PasswordResetTokenRepository passwordTokenRepository;
 	
+	@Autowired
+	AmazonSES amazonSES;
+	
+	
 
 	public UserDto createUser(UserDto user) {
 		
 		
-		if(userRepository.findByEmail(user.getEmail()) != null) throw new RuntimeException("record already exsists");
+		if(userRepository.findByEmail(user.getEmail()) != null) throw new UserServiceException("record already exsists");
 		
 		
 		for(int i=0; i<user.getAddresses().size(); i++) {
@@ -86,7 +91,7 @@ public class UserServiceImpl implements UserService {
 	    
 	    
 	    //send an email using amazon SES
-	    new AmazonSES().verifyEmail(returnValue);
+	    amazonSES.verifyEmail(returnValue);
 		
 		
 
